@@ -71,6 +71,7 @@ for (ii=0; ii<=doch-2;ii++)
       while(labn<=2)
       {
         filename = foldername + "/" + dName[0] + "_" + lab[labn] +".txt";
+        fileObj = new File(filename);
         fileObj.open("r");
         t = fileObj.read();
         fileObj.close();
@@ -78,11 +79,13 @@ for (ii=0; ii<=doch-2;ii++)
         if(labn == 0)
         {
           fileObj.write(t+l);
+
         }if(labn == 1){
           fileObj.write(t+a);
         }else{
           fileObj.write(t+b);
         }
+        fileObj.close();
         labn++;
       }
       l = [];
@@ -97,7 +100,7 @@ for (ii=0; ii<=doch-2;ii++)
 for(labn=0; labn<=2; labn++)
 {
   filename = foldername + "/" + dName[0] + "_" + lab[labn] +".txt";
-  fileObj = new File(filename);
+
   fileObj.open("r");
   t = fileObj.read();
   fileObj.close();
@@ -110,6 +113,7 @@ for(labn=0; labn<=2; labn++)
   }else{
     fileObj.write(t+b);
   }
+  fileObj.close();
 }
 
 
