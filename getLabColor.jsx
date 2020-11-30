@@ -20,7 +20,18 @@ dName = activeDocument.name.split(".");
 
 foldername = fPath + "/" + dName[0] + "_getlab";
 folderObj = new Folder(foldername);
+flag = folderObj.exists;
+// フォルダが重複した場合は末尾に数字を追加して重複回避
+fn = 1;
+while (flag == true)
+{
+  foldername = fPath + "/" + dName[0] + "_getlab_"+fn;
+  folderObj = new Folder(foldername);
+  flag = folderObj.exists;
+  fn++;
+}
 folderObj.create();
+
 
 
 /*
@@ -65,7 +76,7 @@ for (ii=0; ii<=doch-2;ii++)
 
     iii = 1;
     iii++;
-    if(c == 50)
+    if(c == 5000)
     {
       labn=0;
       while(labn<=2)
@@ -78,12 +89,11 @@ for (ii=0; ii<=doch-2;ii++)
         fileObj.open("w");
         if(labn == 0)
         {
-          fileObj.write(t+l);
-
-        }if(labn == 1){
-          fileObj.write(t+a);
-        }else{
-          fileObj.write(t+b);
+          fileObj.write(t+l+",");
+        }else if(labn == 1){
+          fileObj.write(t+a+",");
+        }else if(labn == 2){
+          fileObj.write(t+b+",");
         }
         fileObj.close();
         labn++;
@@ -97,25 +107,28 @@ for (ii=0; ii<=doch-2;ii++)
   ny = ny + 1;
 }
 
-for(labn=0; labn<=2; labn++)
+labn=0;
+while(labn<=2)
 {
   filename = foldername + "/" + dName[0] + "_" + lab[labn] +".txt";
-
+  fileObj = new File(filename);
   fileObj.open("r");
   t = fileObj.read();
   fileObj.close();
-  fileObj.open("w");　
-  if(labn==0)
+  fileObj.open("w");
+  if(labn == 0)
   {
     fileObj.write(t+l);
-  }if(labn==1){
+  }else if(labn == 1)
+  {
     fileObj.write(t+a);
-  }else{
+  }else if( labn == 2)
+  {
     fileObj.write(t+b);
   }
   fileObj.close();
+  labn++;
 }
-
 
 
 mySampl.remove();
