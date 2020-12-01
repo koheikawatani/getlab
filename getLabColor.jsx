@@ -3,9 +3,8 @@
 同階層にmalls.txtとして吐き出すプログラム
 */
 
-/*
-readしたものを加えてwriteするときにずれちゃうのが解消しない！！
-*/
+
+
 
 
 
@@ -21,6 +20,7 @@ dName = activeDocument.name.split(".");
 foldername = fPath + "/" + dName[0] + "_getlab";
 folderObj = new Folder(foldername);
 flag = folderObj.exists;
+
 // フォルダが重複した場合は末尾に数字を追加して重複回避
 fn = 1;
 while (flag == true)
@@ -32,103 +32,76 @@ while (flag == true)
 }
 folderObj.create();
 
-
-
-/*
-uDlg = new Window('dialog','サンプル',[100,100,505,220]);
-uDlg.pBar = uDlg.add("progressbar",[10,30,10+384,30+15], 0, 100);
-uDlg.okBtn = uDlg.add("button",[130,80,225,80+25], "OK!", { name:"ok"});
-uDlg.pBar.value = 1/docw*doch;
-uDlg.show();
-*/
 l = ["L"];
 a = ["A"];
 b = ["B"];
-
+iii = 1;
 lab=["l","a","b"];
+
 
 mySampl = activeDocument.colorSamplers.add([0.5,0.5]);
 c = 0;
 
 
 nx = 0.5;
-ny = 0.5;
+ny = -0.5;
 
-for (ii=0; ii<=doch-2;ii++)
+while ( ny < doch )
 {
-  for (i=0;i<=docw-2;i++)
+  ny++;
+  if((ny + 0.5) % 2 == 0)
   {
-    if (nx == 0.5)
-    {
-      p = 1;
-    }else{
-      p = -1;
-    }
+    nx--;
+  }else{
+    nx++;
+  }
 
-    nx = nx + p;
-
+  while((nx <= docw-0.5) && (0.5 <= nx))
+  {
+    alert(ny);
     l[c] = parseInt(mySampl.color.lab.l);
     a[c] = Math.round(eval(mySampl.color.lab.a)*100)/100;
     b[c] = Math.round(eval(mySampl.color.lab.b)*100)/100;
     c++;
-
     mySampl.move([nx,ny]);
-
-    iii = 1;
-    iii++;
-    if(c == 5000)
+    if((ny + 0.5) % 2 == 0)
     {
-      labn=0;
-      while(labn<=2)
+      nx--;
+    }else{
+      nx++;
+    }
+    if(c == 10)
+    {
+      v = [l, a, b];
+      for(i=0; i<=2;i++)
       {
-        filename = foldername + "/" + dName[0] + "_" + lab[labn] +".txt";
-        fileObj = new File(filename);
-        fileObj.open("r");
-        t = fileObj.read();
-        fileObj.close();
-        fileObj.open("w");
-        if(labn == 0)
-        {
-          fileObj.write(t+l+",");
-        }else if(labn == 1){
-          fileObj.write(t+a+",");
-        }else if(labn == 2){
-          fileObj.write(t+b+",");
-        }
-        fileObj.close();
-        labn++;
+      save(i,v[i])
       }
       l = [];
       a = [];
       b = [];
+      v = [];
       c = 0;
     }
   }
-  ny = ny + 1;
+}
+v = [l, a, b];
+for(i=0; i<=2;i++)
+{
+  save(i,v[i])
 }
 
-labn=0;
-while(labn<=2)
+// L,a,b - 0,1,2
+function save (chn, chv)
 {
-  filename = foldername + "/" + dName[0] + "_" + lab[labn] +".txt";
+  filename = foldername + "/" + dName[0] + "_" + lab[chn] +".txt";
   fileObj = new File(filename);
   fileObj.open("r");
-  t = fileObj.read();
+  t= fileObj.read();
   fileObj.close();
   fileObj.open("w");
-  if(labn == 0)
-  {
-    fileObj.write(t+l);
-  }else if(labn == 1)
-  {
-    fileObj.write(t+a);
-  }else if( labn == 2)
-  {
-    fileObj.write(t+b);
-  }
+  fileObj.write(t + chv + ",");
   fileObj.close();
-  labn++;
 }
-
 
 mySampl.remove();
