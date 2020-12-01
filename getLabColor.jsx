@@ -3,11 +3,11 @@
 同階層にmalls.txtとして吐き出すプログラム
 */
 
+ram = preferences.MAXuse;
+preferences.MAXuse = 85;
 
-
-
-
-
+nhs = preferences.numberOfHistoryStates;
+preferences.numberOfHistoryStates = 1;
 
 preferences.rulerUnits = Units.PIXELS;
 docw = activeDocument.width;
@@ -58,7 +58,6 @@ while ( ny < doch )
 
   while((nx <= docw-0.5) && (0.5 <= nx))
   {
-    alert(ny);
     l[c] = parseInt(mySampl.color.lab.l);
     a[c] = Math.round(eval(mySampl.color.lab.a)*100)/100;
     b[c] = Math.round(eval(mySampl.color.lab.b)*100)/100;
@@ -104,4 +103,7 @@ function save (chn, chv)
   fileObj.close();
 }
 
+
 mySampl.remove();
+preferences.MAXuse = ram;
+preferences.numberOfHistoryStates = nhs;
